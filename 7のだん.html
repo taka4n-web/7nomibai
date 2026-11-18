@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>7のだん</title>
+<style>
+:root{--bg:#f3f8ec;--card:#fff;--ink:#2b3a22;--sub:#6b7a5f;--main:#e8532f;--ok:#2e9e4f;--ng:#d6402a;--line:#cfe0bd;--plate:#fdfcf8;--plateline:#e3dfd2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d241a;--card:#283224;--ink:#eef4e6;--sub:#a9b89c;--line:#3d4b36;--plate:#e9e5d8;--plateline:#bdb8a6}}
+:root[data-theme="dark"]{--bg:#1d241a;--card:#283224;--ink:#eef4e6;--sub:#a9b89c;--line:#3d4b36;--plate:#e9e5d8;--plateline:#bdb8a6}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hiragino Maru Gothic ProN","Zen Maru Gothic","Yu Gothic",system-ui,sans-serif;font-size:18px}
+.wrap{max-width:720px;margin:0 auto;padding:16px}
+header{display:flex;justify-content:space-between;align-items:center;gap:8px}
+h1{font-size:20px;margin:0}
+.score{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:6px 14px;text-align:center;line-height:1.2}
+.score b{font-size:28px;color:var(--main)}
+.score small{display:block;font-size:12px;color:var(--sub)}
+.stats{display:flex;gap:8px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px;margin-top:14px}
+.talk{font-size:19px;line-height:1.6;margin:0 0 10px}
+.talk em{font-style:normal;font-weight:700;color:var(--main);font-size:24px}
+.plates{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:6px 0}
+.plate{position:relative;width:clamp(78px,22vw,104px);aspect-ratio:1;border-radius:50%;background:var(--plate);border:3px solid var(--plateline);box-shadow:inset 0 0 0 6px rgba(0,0,0,.03)}
+.plate span{position:absolute;transform:translate(-50%,-50%);font-size:clamp(18px,5.2vw,26px);line-height:1}
+.bench{display:flex;flex-direction:column;align-items:center;width:clamp(100px,28vw,136px)}
+.bench .ppl{display:flex;font-size:clamp(14px,3.8vw,18px);line-height:1}
+.bench .bar{width:100%;height:12px;background:#d9534f;border-radius:6px;margin-top:2px}
+.cover{text-align:center;padding:28px 18px;margin-top:24px}
+.cover[hidden],#game[hidden]{display:none}
+.cover .big{font-size:48px;letter-spacing:6px}
+.cover h2{font-size:28px;line-height:1.4;margin:10px 0;color:var(--main)}
+.cover .sub{color:var(--sub);line-height:1.7;font-size:16px}
+.opt{display:flex;gap:8px;justify-content:center;align-items:center;margin:20px 0;flex-wrap:wrap}
+.opt button{background:transparent;color:var(--ink);border:2px solid var(--line);padding:8px 20px}
+.opt button.on{background:var(--ink);color:var(--bg)}
+.go{font-size:24px;padding:14px 56px}
+.exp{margin-top:8px;background:var(--bg);border:2px dashed var(--ok);border-radius:12px;padding:10px 14px;font-size:16px;line-height:1.7}
+.exp[hidden]{display:none}
+.grp{width:clamp(84px,24vw,112px);padding:8px 6px;border-radius:16px;border:3px solid rgba(0,0,0,.12);font-size:clamp(15px,4vw,19px);line-height:1.25;text-align:center;word-break:break-all}
+.week{display:flex;width:clamp(100px,28vw,128px);border:2px solid #7aa7d9;border-radius:8px;overflow:hidden;background:#eef5fc}
+.week b{flex:1;text-align:center;font-size:12px;padding:6px 0;color:#2b4a6b;border-right:1px solid #b9d0ea}
+.week b:last-child{border:0;color:#c0392b}
+.trick{display:inline-block;background:#ffe27a;color:#4a3b00;border-radius:10px;padding:1px 10px;font-size:14px;font-weight:700;margin-bottom:6px}
+.talk{font-size:18px}
+.shiki{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;font-size:28px;font-weight:700;flex-wrap:nowrap}
+.shiki{align-items:flex-end}.shiki>span,.shiki>label{padding-bottom:12px}
+.col{display:flex;flex-direction:column;align-items:center;gap:6px}
+.bub{font-style:normal;font-size:13px;font-weight:700;padding:3px 10px;border-radius:12px;white-space:nowrap;color:#3b3320}
+.b1{background:#cfe6f7}.b2{background:#fbd5d5}.b3{background:#fbe6b8}
+.shiki label{font-size:18px;margin-right:4px;color:var(--main)}
+input{caret-color:transparent;cursor:pointer;width:68px;height:60px;font:inherit;font-size:30px;text-align:center;border:3px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink)}
+input.act,input:focus{outline:3px solid var(--main);outline-offset:1px;border-color:var(--main)}
+.btns{display:flex;justify-content:center;gap:10px;margin-top:16px}
+button{font:inherit;font-weight:700;border:0;border-radius:14px;padding:12px 26px;background:var(--main);color:#fff;cursor:pointer}
+button.alt{background:transparent;color:var(--sub);border:2px solid var(--line)}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+button:disabled{opacity:.4;cursor:default}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:300px;margin:14px auto 0}
+.pad button{padding:12px 0;font-size:26px;background:var(--bg);color:var(--ink);border:2px solid var(--line)}
+.pad button:active{background:var(--line)}
+.pad .fn{font-size:16px;color:var(--ng)}
+.msg{min-height:3.2em;margin-top:12px;text-align:center;font-weight:700;line-height:1.5}
+.msg.ok{color:var(--ok)}.msg.ng{color:var(--ng)}
+.set{display:flex;gap:6px;justify-content:center;align-items:center;font-size:14px;color:var(--sub);margin-top:10px;flex-wrap:wrap}
+.set button{padding:4px 12px;font-size:14px;background:transparent;border:2px solid var(--line);color:var(--ink)}
+.set button.on{background:var(--ink);color:var(--bg)}
+.plate-in{animation:pop .3s both}
+@keyframes pop{0%{transform:scale(.8)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+.plate.in{animation:pop .3s both}
+@media (prefers-reduced-motion:reduce){.plate.in{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section id="cover" class="card cover">
+  <div class="big" aria-hidden="true">🍅🧒🍎</div>
+  <h2>7のだん<br>おはなし もんだい</h2>
+  <p class="sub">おはなしを よんで、かけ算の しきを つくろう。<br>しきは 「1つ分の かず × いくつ分」だよ。</p>
+  <div class="opt" role="group" aria-label="イラスト">
+    <span>イラスト</span>
+    <button class="on" data-ill="1" aria-pressed="true">あり</button>
+    <button data-ill="0" aria-pressed="false">なし</button>
+  </div>
+  <button id="start" class="go">スタート</button>
+</section>
+<div id="game" hidden>
+<header>
+  <h1>7のだん かけ算の しきを かこう</h1>
+  <div class="stats">
+    <div class="score"><small>とけた</small><b id="solved">0</b><small>もん</small></div>
+    <div class="score"><small>れんぞく</small><b id="streak">0</b><small>もん</small></div>
+  </div>
+</header>
+<div class="card">
+  <p class="talk" id="talk"></p>
+  <div class="plates" id="plates" aria-label="お皿とくだもの"></div>
+  <div class="shiki">
+    <label for="a">しき</label>
+    <div class="col"><i class="bub b1">1つ分の 数</i><input id="a" inputmode="none" readonly aria-label="1つ分の数"></div>
+    <span>×</span>
+    <div class="col"><i class="bub b2">いくつ分</i><input id="b" inputmode="none" readonly aria-label="いくつ分"></div>
+    <span>=</span>
+    <div class="col"><i class="bub b3">ぜんぶの 数</i><input id="c" inputmode="none" readonly aria-label="ぜんぶの数"></div>
+  </div>
+  <div class="pad" id="pad"><button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button><button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button data-k="del" class="fn">けす</button><button data-k="0">0</button><button data-k="clr" class="fn">ぜんぶけす</button></div>
+  <div class="msg" id="msg" aria-live="polite"></div>
+  <div class="exp" id="exp" hidden></div>
+  <div class="btns">
+    <button id="check">こたえあわせ</button>
+    <button id="next" class="alt">つぎのもんだい</button>
+  </div>
+  <div class="set"><button id="home" type="button">ひょうしへ もどる</button>7のだん だけ （ひっかけ もんだい いり）</div>
+</div>
+</div>
+</div>
+<script>
+const FOODS=[["🍅","ミニトマト"],["🍎","りんご"],["🍊","みかん"],["🍓","いちご"],["🍇","ぶどう"],["🍌","バナナ"],["🥕","にんじん"],["🌽","とうもろこし"],["🍆","なす"],["🥒","きゅうり"],["🍋","レモン"],["🍑","もも"],["🍐","なし"],["🥝","キウイ"],["🍒","さくらんぼ"],["🥦","ブロッコリー"],["🫑","ピーマン"],["🥔","じゃがいも"],["🍄","きのこ"],["🌶️","とうがらし"]];
+const $=id=>document.getElementById(id);
+let st={solved:0,streak:0,max:5,q:null,done:false};
+try{const s=JSON.parse(localStorage.getItem("kakezan")||"{}");if(s.solved)st.solved=s.solved}catch(e){}
+$("solved").textContent=st.solved;
+const rnd=(lo,hi)=>lo+Math.floor(Math.random()*(hi-lo+1));
+function positions(n){
+  if(n===1)return[[50,50]];
+  const out=[];const outer=n<=5?n:Math.ceil(n*0.6),inner=n-outer;
+  for(let i=0;i<outer;i++){const t=2*Math.PI*i/outer-Math.PI/2;out.push([50+31*Math.cos(t),50+31*Math.sin(t)])}
+  for(let i=0;i<inner;i++){const t=2*Math.PI*(i+.5)/inner;out.push([50+(inner===1?0:13)*Math.cos(t),50+(inner===1?0:13)*Math.sin(t)])}
+  return out;
+}
+let act="a";
+function setActive(id){act=id;["a","b","c"].forEach(i=>$(i).classList.toggle("act",i===id))}
+["a","b","c"].forEach(i=>$(i).onclick=()=>{if(!st.done)setActive(i)});
+$("pad").onclick=e=>{
+  const k=e.target.dataset.k;if(k===undefined||st.done)return;
+  const f=$(act);
+  if(k==="del")f.value=f.value.slice(0,-1);
+  else if(k==="clr"){["a","b","c"].forEach(i=>$(i).value="");setActive("a")}
+  else{
+    if(f.value.length>=2)return;
+    f.value=(f.value==="0"?"":f.value)+k;
+    if(act!=="c"&&f.value.length===1)setActive(act==="a"?"b":"c");
+  }
+};
+let showIll=true;
+document.querySelectorAll("[data-ill]").forEach(b=>b.onclick=()=>{
+  showIll=b.dataset.ill==="1";
+  document.querySelectorAll("[data-ill]").forEach(x=>{const on=x===b;x.classList.toggle("on",on);x.setAttribute("aria-pressed",on)});
+});
+function applyIll(){$("plates").style.display=showIll?"":"none"}
+$("start").onclick=()=>{$("cover").hidden=true;$("game").hidden=false;applyIll();newQ()};
+$("home").onclick=()=>{$("game").hidden=true;$("cover").hidden=false};
+const PPL=["🧒","👦","👧","👩","👨","🧑"];
+const pick=a=>a[rnd(0,a.length-1)];
+const SC=[
+ {k:"bench",ctr:"つ",u:"人",a:n=>`長いすが ${n}つ あります。`,b:`1つの 長いすに 7人ずつ すわります。`,c:`みんなで 何人 すわれますか。`,ex:`長いすは どれも 2メートルの ながさです。`},
+ {k:"plate",ctr:"まい",u:"こ",a:n=>`さらが ${n}まい あります。`,b:f=>`1まいに ${f[1]}が 7こずつ のっています。`,c:f=>`${f[1]}は ぜんぶで 何こ ありますか。`,ex:`みさきさんは 8さいです。`},
+ {k:"box",ctr:"ふくろ",u:"こ",e:"🍬",bg:"#fff3c4",a:n=>`ふくろが ${n}ふくろ あります。`,b:`1ふくろに あめが 7こずつ はいっています。`,c:`あめは ぜんぶで 何こ ありますか。`,ex:`たろうさんは 9さいです。`},
+ {k:"box",ctr:"たば",u:"本",e:"🌷",bg:"#ffe0ec",a:n=>`花たばが ${n}たば あります。`,b:`1たばに 花が 7本ずつ はいっています。`,c:`花は ぜんぶで 何本 ありますか。`,ex:`花やさんは 5じに しまります。`},
+ {k:"week",ctr:"しゅうかん",u:"日",a:n=>`${n}しゅうかん あります。`,b:`1しゅうかんは 7日です。`,c:`ぜんぶで 何日 ありますか。`,ex:`いま 3月です。`}
+];
+let lastK=-1;
+function newQ(){
+  let i;do{i=rnd(0,SC.length-1)}while(i===lastK);lastK=i;
+  const sc=SC[i],per=7,n=rnd(2,9),f=pick(FOODS),trick=pick(["plain","swap","extra","swap","extra"]);
+  st.q={per,plates:n,trick,sc};st.done=false;
+  const A=sc.a(n),B=typeof sc.b==="function"?sc.b(f):sc.b,C=typeof sc.c==="function"?sc.c(f):sc.c;
+  $("talk").innerHTML=(trick==="plain"?"":'<span class="trick">ひっかけに ちゅうい！</span><br>')+(trick==="swap"?B+A:(trick==="extra"?sc.ex:"")+A+B)+C;
+  const box=$("plates");box.innerHTML="";
+  const pos=positions(per);
+  for(let p=0;p<n;p++){
+    const d=document.createElement("div");d.style.animationDelay=(p*60)+"ms";
+    if(sc.k==="bench"){
+      d.className="bench plate-in";
+      d.innerHTML='<div class="ppl">'+Array.from({length:per},()=>pick(PPL)).join("")+'</div><div class="bar"></div>';
+    }else if(sc.k==="plate"){
+      d.className="plate in";
+      pos.forEach(([x,y])=>{const s=document.createElement("span");s.textContent=f[0];s.style.left=x+"%";s.style.top=y+"%";d.appendChild(s)});
+    }else if(sc.k==="box"){
+      d.className="grp plate-in";d.style.background=sc.bg;d.textContent=sc.e.repeat(per);
+    }else{
+      d.className="week plate-in";d.innerHTML=[..."月火水木金土日"].map(c=>`<b>${c}</b>`).join("");
+    }
+    box.appendChild(d);
+  }
+  ["a","b","c"].forEach(i=>$(i).value="");
+  $("msg").textContent="";$("msg").className="msg";$("exp").textContent="";$("exp").hidden=true;
+  $("check").disabled=false;setActive("a");
+}
+function check(){
+  if(st.done)return;
+  const {per,plates,trick}=st.q,A=$("a").value.trim(),B=$("b").value.trim(),C=$("c").value.trim(),m=$("msg");
+  if(!A||!B||!C){m.className="msg ng";m.textContent="3つの □ に すうじを いれてね。";return}
+  const a=+A,b=+B,c=+C,total=per*plates;
+  if(a===per&&b===plates&&c===total){
+    st.done=true;st.solved++;st.streak++;
+    $("solved").textContent=st.solved;$("streak").textContent=st.streak;
+    try{localStorage.setItem("kakezan",JSON.stringify({solved:st.solved}))}catch(e){}
+    m.className="msg ok";m.textContent=`せいかい！ ${per} × ${plates} = ${total}。`+(trick==="swap"?"ぶんの じゅんばんに だまされなかったね！":trick==="extra"?"いらない かずに まよわなかったね！":"");
+    const sc=st.q.sc,e=$("exp");e.hidden=false;e.textContent=`かいせつ：1${sc.ctr}に ${per}${sc.u}で、${plates}${sc.ctr}ぶん。${per}を ${plates}かい たすのと おなじだから、${per} × ${plates} = ${total}。こたえは ${total}${sc.u}。`;
+    $("check").disabled=true;$("next").focus({preventScroll:true});
+  }else{
+    st.streak=0;$("streak").textContent=0;m.className="msg ng";
+    if(a===plates&&b===per&&c===total)m.textContent=`こたえは あっているよ。でも しきは 「1つ分の かず × いくつ分」の じゅんで かこう。`;
+    else if(a===per&&b===plates)m.textContent=`しきは あっているよ。こたえを もういちど かんがえてみよう。`;
+    else m.textContent=`おしい！ 「1つ分」と「いくつ分」は どれかな？ もんだいを よくよんで みよう。`;
+  }
+}
+$("check").onclick=check;
+$("next").onclick=newQ;
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&!$("game").hidden){st.done?newQ():check()}});
+</script>
+</body>
+</html>
